@@ -81,10 +81,8 @@ await initialiseBotGuard();
 
 Bun.serve({
   port: PORT,
-  async fetch(req) {
+  async fetch() {
     const response = await generateSession();
-
-    // response.status를 사용하여 상태 코드를 설정합니다.
 
     return new Response(JSON.stringify(response), {
       status: response.status,
