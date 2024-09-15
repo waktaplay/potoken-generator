@@ -12,7 +12,7 @@ import { Innertube } from "youtubei.js/web";
 import { color } from "./utils/color";
 import { REQUEST_KEY } from "./utils/constants";
 
-const PORT = 3000;
+const PORT = 3300;
 
 console.log(figlet.textSync("BotGuard", { font: "Standard" }));
 console.log("--------------------------------------------------------------");
@@ -23,7 +23,15 @@ console.log("--------------------------------------------------------------");
 let innertube: Innertube;
 let challenge: DescrambledChallenge | undefined;
 let bgConfig: BgConfig = {
-  fetch,
+  fetch: (url, options) =>
+    fetch(url, {
+      ...options,
+      proxy:
+        process.env.HTTP_PROXY ||
+        process.env.HTTPS_PROXY ||
+        process.env.PROXY ||
+        undefined,
+    }),
   globalObj: globalThis,
   identifier: "",
   requestKey: REQUEST_KEY,
@@ -81,6 +89,7 @@ await initialiseBotGuard();
 
 Bun.serve({
   port: PORT,
+  hostname: "localhost",
   async fetch() {
     const response = await generateSession();
 

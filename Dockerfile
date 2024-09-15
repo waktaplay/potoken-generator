@@ -8,7 +8,7 @@ RUN bun install --frozen-lockfile
 
 # Copy the rest of the files and run the app
 USER bun
-EXPOSE 3000/tcp
+EXPOSE 3300/tcp
 
 COPY . .
 CMD [ "bun", "run", "src/index.ts" ]
